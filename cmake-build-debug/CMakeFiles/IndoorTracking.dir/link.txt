@@ -1,0 +1,1 @@
+/usr/bin/cc -g   @CMakeFiles/IndoorTracking.dir/objects1.rsp  -o IndoorTracking 
