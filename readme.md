@@ -1,4 +1,4 @@
-# GovTech CAG Autonomous Trolley Collector RTT Indoor Trqacking with NRF52833
+# GovTech RTT Indoor Tracking with NRF52833
 
 # Use Guide
 
