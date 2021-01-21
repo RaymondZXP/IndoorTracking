@@ -1,3 +1,0 @@
-/home/raymond/Desktop/FYP/NRF_RTT/IndoorTracking/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/raymond/Desktop/FYP/NRF_RTT/IndoorTracking/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/raymond/Desktop/FYP/NRF_RTT/IndoorTracking/cmake-build-debug/CMakeFiles/IndoorTracking.dir
