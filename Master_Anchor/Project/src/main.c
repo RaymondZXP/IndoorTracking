@@ -36,15 +36,14 @@
 #define UART_RX_BUF_SIZE 256      /**< UART RX buffer size. */
 #define UART_HWFC APP_UART_FLOW_CONTROL_DISABLED
 
-static uint8_t master_id = 0x1;                                           // need to change to a unique Identifier
+static uint8_t master_id = 0x4;                                           // need to change to a unique Identifier
 static uint8_t test_frame[255] = { 0x00, 0x04, 0xFF, 0xC1, 0xFB, 0xE7 };  // 0-1 crc and verification, 2: master id, 3:
-// NONE 4: tag processing time, 5: slave_ID
+// NONE 4: packet counter, 5: slave_ID
 
 static uint32_t tx_pkt_counter = 0;
 static uint32_t radio_freqs[3] = { 0, 26, 78 };  // Channels available for advertisingn or scanning without pairing
 
 static uint32_t timeout;
-static uint32_t telp;
 static uint32_t rx_pkt_counter = 0;
 static uint32_t rx_pkt_counter_crcok = 0;
 static uint32_t rx_timeouts = 0;
@@ -54,7 +53,7 @@ static uint8_t rx_test_frame[256];
 static uint32_t highper = 0;
 static uint32_t txcntw = 0;
 
-static int radio_B_process_time = 4620;  // need to tune this
+static int radio_B_process_time = 4622;  // need to tune this
 
 int channel_index = 1;
 volatile bool freq_change = false;
@@ -74,8 +73,6 @@ void setup_leds();
 void uart_error_handle(app_uart_evt_t* p_event);
 
 void uart_init();
-
-float calc_dist(void);
 
 int main(void)
 {
@@ -212,10 +209,10 @@ int main(void)
           {
             /* Packet is good, update stats */
             NRF_TIMER0->TASKS_STOP = 1;
-            telp = NRF_TIMER0->CC[0];
-            clk_cycles_elapsed = telp - radio_B_process_time;
+            clk_cycles_elapsed = NRF_TIMER0->CC[0] - radio_B_process_time;
+         
 
-            if ((clk_cycles_elapsed >= 0) && (clk_cycles_elapsed < MAX_CYCLE))
+            if (clk_cycles_elapsed < MAX_CYCLE)
             {
               cr = clk_cycles_elapsed;
               app_uart_put(cr);
