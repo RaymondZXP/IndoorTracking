@@ -36,7 +36,8 @@
 #define UART_RX_BUF_SIZE 256      /**< UART RX buffer size. */
 #define UART_HWFC APP_UART_FLOW_CONTROL_DISABLED
 
-static uint8_t master_id = 0x4;                                           // need to change to a unique Identifier
+static uint8_t master_id = 0x2;    
+int channel_index = 1;                                       
 static uint8_t test_frame[255] = { 0x00, 0x04, 0xFF, 0xC1, 0xFB, 0xE7 };  // 0-1 crc and verification, 2: master id, 3:
 // NONE 4: packet counter, 5: slave_ID
 
@@ -53,9 +54,9 @@ static uint8_t rx_test_frame[256];
 static uint32_t highper = 0;
 static uint32_t txcntw = 0;
 
-static int radio_B_process_time = 4622;  // need to tune this
+static int radio_B_process_time = 4600;  // need to tune this
 
-int channel_index = 1;
+
 volatile bool freq_change = false;
 
 void nrf_radio_init(void);
@@ -94,13 +95,13 @@ int main(void)
 
   while (true)
   {
-    uint8_t cr; /* variable for UART transmission*/
+    int cr; /* variable for UART transmission*/
 
     if (freq_change) /* Frequency Hopping*/
     {
       freq_change = !freq_change;
-      channel_index = (channel_index + 1) % 3;
-      nrf_radio_switch_channel(channel_index);
+      // channel_index = (channel_index + 1) % 3;
+      // nrf_radio_switch_channel(channel_index);
     }
 
     while (!freq_change)
@@ -216,6 +217,7 @@ int main(void)
             {
               cr = clk_cycles_elapsed;
               app_uart_put(cr);
+              // printf("%d\r\n", (int)cr);
             }
             NRF_TIMER0->TASKS_CLEAR = 1;
           }
