@@ -85,8 +85,8 @@ int main(void)
     if (freq_change)
     {
       freq_change = !freq_change;
-      // channel_index = (channel_index + 1) % 3;
-      // nrf_radio_switch_channel(channel_index);
+      channel_index = (channel_index + 1) % 3;
+      nrf_radio_switch_channel(channel_index);
     }
     while (!freq_change)
     {
